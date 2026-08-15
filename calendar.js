@@ -1,17 +1,20 @@
-// daily-learn :: calendar widget
+// daily-learn :: bookshelf calendar
 //
-// Renders the current month with today highlighted. Hovering today shows
-// that day's topic; hovering a past day shows a green/yellow/red status
-// pulled from localStorage: completed, incomplete, or never started.
+// Renders the current month as a wooden bookshelf, one shelf row per week,
+// one book per day. Today's book glows faintly. Hovering a past or today's
+// book slides it partially up out of the shelf and reveals a tooltip:
+// today's topic, or a past day's status (finished / bookmarked / unopened)
+// pulled from localStorage.
 //
 // Nothing writes "completed"/"incomplete" into storage yet — that happens
 // once the actual daily-prompt/essay flow exists. Until then every past
-// day reads as "never started". Schema:
+// day reads as "unopened". Schema:
 //   localStorage["daily-learn-progress"] = { "YYYY-MM-DD": "completed" | "incomplete" }
 (function () {
   "use strict";
 
   var STORAGE_KEY = "daily-learn-progress";
+  var BOOK_COLORS = 8;
 
   // Placeholder topics until the real prompt list/generator is built —
   // just enough variety to demo the "hover today" behavior.
@@ -88,47 +91,54 @@
     var progress = getProgress();
     var dow = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-    var html = '<div class="cal-header">' + monthLabel + "</div>";
-    html += '<div class="cal-grid">';
+    var html = '<div class="shelf-title">' + monthLabel + "</div>";
 
+    html += '<div class="shelf-labels">';
     for (var d = 0; d < dow.length; d++) {
-      html += '<div class="cal-dow">' + dow[d] + "</div>";
+      html += '<span class="shelf-label">' + dow[d] + "</span>";
     }
+    html += "</div>";
+
+    html += '<div class="bookshelf">';
 
     for (var e = 0; e < startWeekday; e++) {
-      html += '<div class="cal-cell empty"></div>';
+      html += '<div class="book-slot empty"></div>';
     }
 
     for (var day = 1; day <= daysInMonth; day++) {
       var date = new Date(year, month, day);
-      var classes = ["cal-cell", "cal-day"];
+      var bookClasses = ["book", "book-c" + ((day - 1) % BOOK_COLORS)];
       var tooltip = null;
+      var interactive = false;
 
       if (day === today.getDate()) {
-        classes.push("today");
-        tooltip = "today: " + topicForDate(date);
+        bookClasses.push("today");
+        tooltip = "today's chapter: " + topicForDate(date);
+        interactive = true;
       } else if (date < today) {
         var status = statusFor(date, progress);
-        var label = status === "completed" ? "completed"
-          : status === "incomplete" ? "incomplete"
-          : "never started";
-        classes.push("past", "status-" + status);
+        var label = status === "completed" ? "finished"
+          : status === "incomplete" ? "bookmarked — in progress"
+          : "unopened";
+        bookClasses.push("past", "status-" + status);
         tooltip = label;
+        interactive = true;
       } else {
-        classes.push("future");
+        bookClasses.push("future");
       }
 
-      html += '<div class="' + classes.join(" ") + '"' +
+      html += '<div class="book-slot"><div class="' + bookClasses.join(" ") + '"' +
         (tooltip ? ' data-tooltip="' + escapeAttr(tooltip) + '"' : "") +
-        ">" + day + "</div>";
+        (interactive ? ' tabindex="0"' : "") +
+        "><span class=\"book-num\">" + day + "</span></div></div>";
     }
 
     html += "</div>";
     container.innerHTML = html;
 
-    var interactiveDays = container.querySelectorAll(".cal-day[data-tooltip]");
-    for (var idx = 0; idx < interactiveDays.length; idx++) {
-      interactiveDays[idx].addEventListener("mouseenter", function () {
+    var interactiveBooks = container.querySelectorAll(".book[data-tooltip]");
+    for (var idx = 0; idx < interactiveBooks.length; idx++) {
+      interactiveBooks[idx].addEventListener("mouseenter", function () {
         if (window.DLSound) window.DLSound.hover();
       });
     }

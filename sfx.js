@@ -1,9 +1,11 @@
-// daily-learn :: synthesized HUD sound effects
+// daily-learn :: synthesized cozy sound effects
 //
 // Every sound here is generated on the fly with the Web Audio API
-// (oscillator + gain envelope) — no audio files, nothing fetched. Exposed
-// as window.DLSound so app.js and calendar.js can both trigger cues
-// without needing to know how they're made.
+// (oscillator + lowpass filter + gain envelope) — no audio files, nothing
+// fetched. Triangle waves + a gentle lowpass give everything a soft,
+// muffled-wood character rather than a digital/sci-fi beep. Exposed as
+// window.DLSound so app.js and calendar.js can both trigger cues without
+// needing to know how they're made.
 (function () {
   "use strict";
 
@@ -40,15 +42,19 @@
     }
   }
 
-  // Single tone with a short attack/decay envelope so it doesn't click at
-  // the edges. `opts.glideTo`, if set, sweeps the frequency across the
-  // tone's duration.
+  // Single tone with a short attack/decay envelope and a lowpass filter
+  // so it doesn't click at the edges or sound too digital. `opts.glideTo`,
+  // if set, sweeps the frequency across the tone's duration.
   function tone(audio, freq, startTime, duration, opts) {
     opts = opts || {};
     var osc = audio.createOscillator();
     var gain = audio.createGain();
+    var filter = audio.createBiquadFilter();
 
-    osc.type = opts.type || "sine";
+    filter.type = "lowpass";
+    filter.frequency.value = opts.filterFreq || 2000;
+
+    osc.type = opts.type || "triangle";
     osc.frequency.setValueAtTime(freq, startTime);
     if (opts.glideTo) {
       osc.frequency.linearRampToValueAtTime(opts.glideTo, startTime + duration);
@@ -56,10 +62,10 @@
 
     var peak = opts.volume != null ? opts.volume : 0.15;
     gain.gain.setValueAtTime(0.0001, startTime);
-    gain.gain.linearRampToValueAtTime(peak, startTime + 0.015);
+    gain.gain.linearRampToValueAtTime(peak, startTime + 0.02);
     gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 
-    osc.connect(gain).connect(audio.destination);
+    osc.connect(filter).connect(gain).connect(audio.destination);
     osc.start(startTime);
     osc.stop(startTime + duration + 0.02);
   }
@@ -73,30 +79,37 @@
     };
   }
 
+  // Warm two-note pluck, like a soft harp/kalimba tap — the door creaking open.
   var success = guarded(function (audio) {
     var t = audio.currentTime;
-    tone(audio, 660, t, 0.11, { type: "sine", volume: 0.14 });
-    tone(audio, 880, t + 0.09, 0.16, { type: "sine", volume: 0.16 });
+    tone(audio, 392, t, 0.16, { volume: 0.13, filterFreq: 1800 });
+    tone(audio, 523, t + 0.11, 0.22, { volume: 0.15, filterFreq: 1800 });
   });
 
+  // A soft low double-knock, not an alarm — "no, try again."
   var error = guarded(function (audio) {
-    tone(audio, 220, audio.currentTime, 0.18, {
-      type: "sawtooth",
-      volume: 0.09,
-      glideTo: 150
+    var t = audio.currentTime;
+    tone(audio, 150, t, 0.09, { volume: 0.11, filterFreq: 900 });
+    tone(audio, 130, t + 0.11, 0.11, { volume: 0.1, filterFreq: 900 });
+  });
+
+  // Little wooden "tock" for buttons.
+  var click = guarded(function (audio) {
+    tone(audio, 300, audio.currentTime, 0.06, { volume: 0.08, filterFreq: 1400 });
+  });
+
+  // Quick page-flip chirp for hovering a book.
+  var hover = guarded(function (audio) {
+    tone(audio, 520, audio.currentTime, 0.05, {
+      volume: 0.045,
+      filterFreq: 2600,
+      glideTo: 420
     });
   });
 
-  var click = guarded(function (audio) {
-    tone(audio, 520, audio.currentTime, 0.045, { type: "square", volume: 0.06 });
-  });
-
-  var hover = guarded(function (audio) {
-    tone(audio, 920, audio.currentTime, 0.035, { type: "sine", volume: 0.03 });
-  });
-
+  // Very soft tick while typing.
   var type = guarded(function (audio) {
-    tone(audio, 700, audio.currentTime, 0.025, { type: "square", volume: 0.03 });
+    tone(audio, 340, audio.currentTime, 0.03, { volume: 0.035, filterFreq: 1200 });
   });
 
   window.DLSound = {

@@ -3,74 +3,67 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DAILY-LEARN</title>
+<title>daily-learn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<main class="hud-panel" id="gate">
-  <span class="corner corner-tl"></span>
-  <span class="corner corner-tr"></span>
-  <span class="corner corner-bl"></span>
-  <span class="corner corner-br"></span>
+<main class="panel" id="gate">
 
-  <div class="hud-header">
-    <span class="status-dot"></span>
-    <span class="hud-label">DAILY-LEARN // ACCESS</span>
+  <div class="panel-header">
+    <span class="candle"></span>
+    <span class="panel-label">daily-learn</span>
   </div>
 
-  <div class="hud-body">
+  <div class="panel-body">
 
-    <p class="readout">SYSTEM ONLINE.</p>
-    <p class="readout">IDENTITY VERIFICATION REQUIRED.</p>
+    <p class="note">the door is locked.</p>
+    <p class="note">solve the little riddle to come in:</p>
 
-    <p class="problem-line">
-      SOLVE TO AUTHENTICATE&nbsp;&nbsp;<span id="problem" class="accent">&hellip;</span>&nbsp;=
+    <p class="riddle">
+      <span id="problem" class="riddle-sum">&hellip;</span>&nbsp;= ?
     </p>
 
     <div class="input-row">
-      <span class="input-caret">&gt;</span>
-      <input id="answer" class="answer-input" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" aria-label="answer" placeholder="RESPONSE">
+      <input id="answer" class="answer-input" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" aria-label="answer" placeholder="your answer">
+      <span class="input-caret">&#9998;</span>
     </div>
 
-    <p class="readout error" id="error" hidden>ACCESS DENIED &mdash; INCORRECT RESPONSE.</p>
+    <p class="note note-error" id="error" hidden>hmm, that's not quite right &mdash; try again.</p>
 
   </div>
 
-  <div class="hud-footer">
-    <span>PRESS ENTER TO SUBMIT</span>
+  <div class="panel-footer">
+    <span>press enter</span>
     <span id="attempts"></span>
   </div>
 </main>
 
-<main class="hud-panel" id="site" hidden>
-  <span class="corner corner-tl"></span>
-  <span class="corner corner-tr"></span>
-  <span class="corner corner-bl"></span>
-  <span class="corner corner-br"></span>
+<main class="panel" id="site" hidden>
 
-  <div class="hud-header">
-    <span class="status-dot status-dot-online"></span>
-    <span class="hud-label">DAILY-LEARN // ONLINE</span>
+  <div class="panel-header">
+    <span class="candle candle-lit"></span>
+    <span class="panel-label">daily-learn</span>
   </div>
 
-  <div class="hud-body">
+  <div class="panel-body">
 
-    <p class="readout success">ACCESS GRANTED.</p>
-    <h1 class="welcome-heading">WELCOME, GABRIEL</h1>
+    <p class="note note-success">the door creaks open.</p>
+    <h1 class="welcome-heading">welcome, Gabriel</h1>
+    <p class="hint">pull a book down to peek inside &#8213;</p>
 
-    <div id="calendar" class="calendar" aria-label="progress calendar"></div>
-
-    <p class="readout idle"><span class="idle-dot"></span> STANDING BY</p>
+    <div id="calendar" class="calendar" aria-label="reading calendar"></div>
 
   </div>
 
-  <div class="hud-footer">
-    <span>HOVER A DAY FOR DETAILS &middot; NOT REAL AUTH</span>
+  <div class="panel-footer">
+    <span>hover a book for details &middot; not real security</span>
     <span class="footer-right">
-      <button id="voice-toggle" class="toggle-btn" type="button" aria-pressed="true">VOICE: ON</button>
-      <button id="sfx-toggle" class="toggle-btn" type="button" aria-pressed="true">SFX: ON</button>
-      <a href="https://github.com/neoutinn/daily-learn">SOURCE</a>
+      <button id="sfx-toggle" class="toggle-btn" type="button" aria-pressed="true">SOUND: ON</button>
+      <a href="https://github.com/neoutinn/daily-learn">source</a>
     </span>
   </div>
 </main>

@@ -3,8 +3,8 @@
 // This is a vibe gate, not real security: the correct answer is computed
 // and checked in the browser, so anyone reading this file (or dev tools)
 // can bypass it trivially. There's no sensitive content behind it — it's
-// here to fit the AI-assistant "identity verification" feel, not to
-// protect anything.
+// here for the "solve the riddle to come in" feel, not to protect
+// anything.
 (function () {
   "use strict";
 
@@ -14,11 +14,9 @@
   var input = document.getElementById("answer");
   var errorEl = document.getElementById("error");
   var attemptsEl = document.getElementById("attempts");
-  var voiceToggle = document.getElementById("voice-toggle");
   var sfxToggle = document.getElementById("sfx-toggle");
 
   var SESSION_KEY = "daily-learn-authed";
-  var VOICE_KEY = "daily-learn-voice";
 
   function playSound(name) {
     if (window.DLSound && typeof window.DLSound[name] === "function") {
@@ -26,102 +24,10 @@
     }
   }
 
-  // --- voice greeting -------------------------------------------------
-  // Uses the browser's built-in speech synthesis (Web Speech API) — no
-  // audio files, no external service, nothing to fetch. Voice quality
-  // and availability depend entirely on the browser/OS; this just tries
-  // to steer toward a calmer, deeper, RP-leaning voice when one exists.
-
-  function isVoiceEnabled() {
-    try {
-      return localStorage.getItem(VOICE_KEY) !== "off";
-    } catch (e) {
-      return true;
-    }
-  }
-
-  function setVoiceEnabled(enabled) {
-    try {
-      localStorage.setItem(VOICE_KEY, enabled ? "on" : "off");
-    } catch (e) {
-      // ignore — preference just won't persist
-    }
-  }
-
-  function updateVoiceToggleLabel() {
-    if (!voiceToggle) return;
-    var on = isVoiceEnabled();
-    voiceToggle.textContent = "VOICE: " + (on ? "ON" : "OFF");
-    voiceToggle.setAttribute("aria-pressed", on ? "true" : "false");
-  }
-
-  function pickVoice(voices) {
-    if (!voices || !voices.length) return null;
-    var byNamedMale = voices.find(function (v) {
-      return /en-GB/i.test(v.lang) && /male|daniel|arthur|george|ryan/i.test(v.name);
-    });
-    if (byNamedMale) return byNamedMale;
-    var byBritish = voices.find(function (v) { return /en-GB/i.test(v.lang); });
-    if (byBritish) return byBritish;
-    var byEnglish = voices.find(function (v) { return /^en/i.test(v.lang); });
-    return byEnglish || voices[0];
-  }
-
-  function speak(text) {
-    if (!("speechSynthesis" in window) || !isVoiceEnabled()) return;
-
-    var utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 0.92;
-    utter.pitch = 0.8;
-    utter.volume = 1;
-
-    var voices = window.speechSynthesis.getVoices();
-    if (voices.length) {
-      var v = pickVoice(voices);
-      if (v) {
-        utter.voice = v;
-        utter.lang = v.lang;
-      }
-      window.speechSynthesis.speak(utter);
-    } else {
-      // Chrome/Edge often report zero voices until they finish loading
-      // asynchronously — pick up the real list once it's ready.
-      window.speechSynthesis.onvoiceschanged = function () {
-        var loaded = window.speechSynthesis.getVoices();
-        var v2 = pickVoice(loaded);
-        if (v2) {
-          utter.voice = v2;
-          utter.lang = v2.lang;
-        }
-        window.speechSynthesis.speak(utter);
-        window.speechSynthesis.onvoiceschanged = null;
-      };
-    }
-  }
-
-  function announceWelcome() {
-    window.setTimeout(function () {
-      speak("Welcome, Gabriel. All systems online.");
-    }, 400);
-  }
-
-  if (voiceToggle) {
-    updateVoiceToggleLabel();
-    voiceToggle.addEventListener("click", function () {
-      var nowOn = !isVoiceEnabled();
-      setVoiceEnabled(nowOn);
-      updateVoiceToggleLabel();
-      playSound("click");
-      if (!nowOn && "speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    });
-  }
-
   function updateSfxToggleLabel() {
     if (!sfxToggle || !window.DLSound) return;
     var on = window.DLSound.isEnabled();
-    sfxToggle.textContent = "SFX: " + (on ? "ON" : "OFF");
+    sfxToggle.textContent = "SOUND: " + (on ? "ON" : "OFF");
     sfxToggle.setAttribute("aria-pressed", on ? "true" : "false");
   }
 
@@ -133,7 +39,6 @@
       playSound("click"); // no-op if just turned off, audible if just turned on
     });
   }
-  // ---------------------------------------------------------------------
 
   function randInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -182,7 +87,6 @@
     gate.hidden = true;
     site.hidden = false;
     playSound("success");
-    announceWelcome();
   }
 
   function checkAnswer() {
@@ -197,7 +101,7 @@
 
     attempts += 1;
     errorEl.hidden = false;
-    attemptsEl.textContent = "ATTEMPTS: " + attempts;
+    attemptsEl.textContent = "attempts: " + attempts;
     input.value = "";
     current = generateProblem();
     paintProblem();
@@ -223,7 +127,6 @@
   if (alreadyAuthed) {
     gate.hidden = true;
     site.hidden = false;
-    announceWelcome();
   } else {
     paintProblem();
     input.focus();
