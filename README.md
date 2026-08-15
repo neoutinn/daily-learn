@@ -3,8 +3,8 @@ a learning tool, intended to be used daily, where different prompts are given in
 
 ## status
 
-Early scaffold only — a static, early-internet-styled dark-mode landing page.
-No features yet; those come next.
+Early scaffold only — a static, dark-mode landing page styled like a sleek
+Linux terminal window. No features yet; those come next.
 
 ## deployment
 
