@@ -130,7 +130,7 @@
       html += '<div class="book-slot"><div class="' + bookClasses.join(" ") + '"' +
         (tooltip ? ' data-tooltip="' + escapeAttr(tooltip) + '"' : "") +
         (interactive ? ' tabindex="0"' : "") +
-        "><span class=\"book-num\">" + day + "</span></div></div>";
+        "><span class=\"book-deco\"></span><span class=\"book-num\">" + day + "</span></div></div>";
     }
 
     html += "</div>";

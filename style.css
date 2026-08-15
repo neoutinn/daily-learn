@@ -315,23 +315,66 @@ body::after  { transform: translate(30%, 40%);   animation: drift 11s ease-in-ou
   cursor: default;
   transform-origin: bottom center;
   transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, filter 0.2s ease-out;
+
+  /* spine bands (top + bottom "hubs") + a cylindrical light/shadow sweep,
+     layered over the flat --spine base color */
+  background-color: var(--spine);
+  background-image:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0) 14%, rgba(0, 0, 0, 0) 78%, rgba(255, 255, 255, 0.16)),
+    linear-gradient(var(--spine-dark), var(--spine-dark)),
+    linear-gradient(var(--spine-dark), var(--spine-dark));
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-size: 100% 100%, 100% 5px, 100% 5px;
+  background-position: 0 0, top, bottom;
+}
+
+/* embossed title-line detail on the spine */
+.book-deco {
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55%;
+  height: 2px;
+  background: var(--spine-light);
+  box-shadow: 0 6px 0 var(--spine-light);
+  opacity: 0.6;
+}
+
+/* sliver of "pages" peeking out one edge */
+.book::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  right: 3px;
+  width: 3px;
+  background: var(--paper-dim);
+  opacity: 0.85;
 }
 
 .book-num {
+  position: relative;
   font-size: 0.62rem;
   color: var(--paper);
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
 }
 
+/* slight size variation so the shelf doesn't look like a uniform grid */
+.book-slot:nth-child(4n) .book    { width: 64%; height: 78%; }
+.book-slot:nth-child(4n+1) .book  { width: 78%; height: 88%; }
+.book-slot:nth-child(4n+2) .book  { width: 70%; height: 82%; }
+.book-slot:nth-child(4n+3) .book  { width: 75%; height: 74%; }
+
 /* deterministic warm spine colors, cycled by day-of-month */
-.book-c0 { background: var(--dusty); }
-.book-c1 { background: var(--ok); }
-.book-c2 { background: var(--warn); }
-.book-c3 { background: #a95c7a; }
-.book-c4 { background: #4f7d7a; }
-.book-c5 { background: #cbb27a; }
-.book-c6 { background: #7a2f3b; }
-.book-c7 { background: #6b7a3a; }
+.book-c0 { --spine: #b5654a; --spine-dark: #7d4534; --spine-light: #dba088; }
+.book-c1 { --spine: #6f9a5c; --spine-dark: #4c6b3e; --spine-light: #9dc189; }
+.book-c2 { --spine: #d99a3a; --spine-dark: #a06f24; --spine-light: #f0c26e; }
+.book-c3 { --spine: #a95c7a; --spine-dark: #753d54; --spine-light: #cf90ac; }
+.book-c4 { --spine: #4f7d7a; --spine-dark: #345450; --spine-light: #7aada9; }
+.book-c5 { --spine: #cbb27a; --spine-dark: #93794c; --spine-light: #e8d8ad; }
+.book-c6 { --spine: #7a2f3b; --spine-dark: #4f1d26; --spine-light: #a85c68; }
+.book-c7 { --spine: #6b7a3a; --spine-dark: #485226; --spine-light: #96a468; }
 
 .book.future {
   filter: grayscale(0.55) brightness(0.7);
@@ -369,8 +412,8 @@ body::after  { transform: translate(30%, 40%);   animation: drift 11s ease-in-ou
   box-shadow: 3px 10px 12px rgba(0, 0, 0, 0.4), 0 0 10px rgba(181, 101, 74, 0.55);
 }
 
-.book[data-tooltip]:hover::after,
-.book[data-tooltip]:focus-visible::after {
+.book[data-tooltip]:hover::before,
+.book[data-tooltip]:focus-visible::before {
   content: attr(data-tooltip);
   position: absolute;
   bottom: 112%;
