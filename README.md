@@ -14,6 +14,11 @@ Note: the login is a fun client-side gate, not real authentication — the
 answer is generated and checked in the browser (`app.js`), so it's trivially
 bypassable and there's nothing sensitive behind it.
 
+On unlock, it speaks a short "Welcome, Gabriel" greeting using the
+browser's built-in speech synthesis (Web Speech API) — no audio files, no
+external service. Voice quality/availability depends on the browser/OS. A
+VOICE ON/OFF toggle in the footer persists via `localStorage`.
+
 ## deployment
 
 Plain static HTML/CSS served via GitHub Pages from the `main` branch

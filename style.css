@@ -247,6 +247,34 @@ body::after {
   text-decoration: none;
 }
 
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.voice-toggle {
+  background: transparent;
+  border: 1px solid rgba(79, 214, 255, 0.25);
+  border-radius: 3px;
+  color: var(--dim);
+  font: inherit;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  padding: 3px 7px;
+  cursor: pointer;
+}
+
+.voice-toggle:hover {
+  color: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.voice-toggle[aria-pressed="false"] {
+  color: rgba(91, 125, 146, 0.6);
+  border-color: rgba(91, 125, 146, 0.3);
+}
+
 .hud-footer a:hover {
   color: var(--accent-soft);
   text-decoration: underline;
