@@ -15,6 +15,7 @@
   --accent:    #7ee787;
   --accent-2:  #7dd3fc;
   --cursor:    #d8dee9;
+  --error:     #e0757d;
 }
 
 * {
@@ -122,8 +123,36 @@ body {
   color: var(--dim);
 }
 
-.out .accent {
+.accent {
   color: var(--accent-2);
+}
+
+.out.success {
+  color: var(--accent);
+}
+
+.out.error {
+  color: var(--error);
+}
+
+.boot {
+  color: var(--dim);
+}
+
+.problem-line {
+  margin: 14px 0;
+  color: var(--text);
+}
+
+.answer-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  caret-color: var(--accent);
+  font: inherit;
+  width: 6ch;
+  padding: 0;
 }
 
 .cursor {

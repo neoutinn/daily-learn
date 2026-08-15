@@ -8,7 +8,41 @@
 </head>
 <body>
 
-<main class="terminal">
+<main class="terminal" id="gate">
+
+  <div class="titlebar">
+    <span class="dot dot-red"></span>
+    <span class="dot dot-yellow"></span>
+    <span class="dot dot-green"></span>
+    <span class="titlebar-label">daily-learn login</span>
+  </div>
+
+  <div class="screen">
+
+    <p class="line boot">booting daily-learn OS v0.1 ...</p>
+    <p class="line boot">authentication required.</p>
+
+    <p class="line problem-line">
+      solve to continue&nbsp;&nbsp;<span id="problem" class="accent">&hellip;</span>&nbsp;=
+    </p>
+
+    <p class="line">
+      <span class="prompt">guest@daily-learn</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
+      <input id="answer" class="answer-input" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" aria-label="answer">
+    </p>
+
+    <p class="out error" id="error" hidden>access denied &mdash; incorrect answer, try again.</p>
+
+  </div>
+
+  <div class="statusbar">
+    <span>press enter to submit</span>
+    <span id="attempts"></span>
+  </div>
+
+</main>
+
+<main class="terminal" id="site" hidden>
 
   <div class="titlebar">
     <span class="dot dot-red"></span>
@@ -18,6 +52,8 @@
   </div>
 
   <div class="screen">
+
+    <p class="out success"># access granted &mdash; welcome to daily-learn</p>
 
     <p class="line">
       <span class="prompt">guest@daily-learn</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
@@ -51,11 +87,13 @@
   </div>
 
   <div class="statusbar">
-    <span>no js &middot; no tracking</span>
+    <span>no tracking &middot; gate solved client-side, not real auth</span>
     <a href="https://github.com/neoutinn/daily-learn">source</a>
   </div>
 
 </main>
+
+<script src="app.js"></script>
 
 </body>
 </html>
