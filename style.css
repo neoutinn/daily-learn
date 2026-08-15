@@ -253,7 +253,7 @@ body::after {
   gap: 14px;
 }
 
-.voice-toggle {
+.toggle-btn {
   background: transparent;
   border: 1px solid rgba(79, 214, 255, 0.25);
   border-radius: 3px;
@@ -265,12 +265,12 @@ body::after {
   cursor: pointer;
 }
 
-.voice-toggle:hover {
+.toggle-btn:hover {
   color: var(--accent-soft);
   border-color: var(--accent);
 }
 
-.voice-toggle[aria-pressed="false"] {
+.toggle-btn[aria-pressed="false"] {
   color: rgba(91, 125, 146, 0.6);
   border-color: rgba(91, 125, 146, 0.3);
 }

@@ -19,6 +19,12 @@ browser's built-in speech synthesis (Web Speech API) — no audio files, no
 external service. Voice quality/availability depends on the browser/OS. A
 VOICE ON/OFF toggle in the footer persists via `localStorage`.
 
+It also has HUD-style sound effects (`sfx.js`): a confirm chime on access
+granted, an error buzz on a wrong answer, soft key-ticks while typing the
+answer, a light blip on calendar hover, and clicks on the toggle buttons.
+These are synthesized on the fly with the Web Audio API — again, no audio
+files. A separate SFX ON/OFF toggle sits next to the voice one.
+
 ## deployment
 
 Plain static HTML/CSS served via GitHub Pages from the `main` branch

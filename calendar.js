@@ -125,6 +125,13 @@
 
     html += "</div>";
     container.innerHTML = html;
+
+    var interactiveDays = container.querySelectorAll(".cal-day[data-tooltip]");
+    for (var idx = 0; idx < interactiveDays.length; idx++) {
+      interactiveDays[idx].addEventListener("mouseenter", function () {
+        if (window.DLSound) window.DLSound.hover();
+      });
+    }
   }
 
   if (document.readyState === "loading") {

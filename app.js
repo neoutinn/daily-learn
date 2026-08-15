@@ -15,9 +15,16 @@
   var errorEl = document.getElementById("error");
   var attemptsEl = document.getElementById("attempts");
   var voiceToggle = document.getElementById("voice-toggle");
+  var sfxToggle = document.getElementById("sfx-toggle");
 
   var SESSION_KEY = "daily-learn-authed";
   var VOICE_KEY = "daily-learn-voice";
+
+  function playSound(name) {
+    if (window.DLSound && typeof window.DLSound[name] === "function") {
+      window.DLSound[name]();
+    }
+  }
 
   // --- voice greeting -------------------------------------------------
   // Uses the browser's built-in speech synthesis (Web Speech API) — no
@@ -104,9 +111,26 @@
       var nowOn = !isVoiceEnabled();
       setVoiceEnabled(nowOn);
       updateVoiceToggleLabel();
+      playSound("click");
       if (!nowOn && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
+    });
+  }
+
+  function updateSfxToggleLabel() {
+    if (!sfxToggle || !window.DLSound) return;
+    var on = window.DLSound.isEnabled();
+    sfxToggle.textContent = "SFX: " + (on ? "ON" : "OFF");
+    sfxToggle.setAttribute("aria-pressed", on ? "true" : "false");
+  }
+
+  if (sfxToggle && window.DLSound) {
+    updateSfxToggleLabel();
+    sfxToggle.addEventListener("click", function () {
+      window.DLSound.setEnabled(!window.DLSound.isEnabled());
+      updateSfxToggleLabel();
+      playSound("click"); // no-op if just turned off, audible if just turned on
     });
   }
   // ---------------------------------------------------------------------
@@ -157,6 +181,7 @@
     }
     gate.hidden = true;
     site.hidden = false;
+    playSound("success");
     announceWelcome();
   }
 
@@ -177,10 +202,15 @@
     current = generateProblem();
     paintProblem();
     input.focus();
+    playSound("error");
   }
 
   input.addEventListener("keydown", function (e) {
     if (e.key === "Enter") checkAnswer();
+  });
+
+  input.addEventListener("input", function () {
+    playSound("type");
   });
 
   var alreadyAuthed = false;
