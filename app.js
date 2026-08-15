@@ -20,28 +20,30 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  // Two-step problem (multiply, then add/subtract) so it can't be solved
-  // at a glance, but stays small enough to do in your head. Subtraction
-  // is clamped so the answer is always a non-negative whole number.
+  // Three-step problem (multiply, then two add/subtract terms) — enough
+  // that it can't be solved at a glance, but each step is still small
+  // enough to do in your head. Every intermediate value is clamped to
+  // stay non-negative, so the answer is always a whole number >= 0.
   function generateProblem() {
     var a = randInt(4, 12);
     var b = randInt(4, 12);
-    var product = a * b;
-    var op = Math.random() < 0.5 ? "+" : "-";
-    var c, answer;
+    var value = a * b;
+    var display = a + " × " + b;
 
-    if (op === "+") {
-      c = randInt(5, 40);
-      answer = product + c;
-    } else {
-      c = randInt(5, Math.min(40, product - 1));
-      answer = product - c;
+    for (var i = 0; i < 2; i++) {
+      var op = Math.random() < 0.5 ? "+" : "-";
+      var term;
+      if (op === "+") {
+        term = randInt(4, 25);
+        value += term;
+      } else {
+        term = randInt(4, Math.min(25, value - 1));
+        value -= term;
+      }
+      display += " " + op + " " + term;
     }
 
-    return {
-      display: a + " × " + b + " " + op + " " + c,
-      answer: answer
-    };
+    return { display: display, answer: value };
   }
 
   var current = generateProblem();

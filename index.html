@@ -53,33 +53,12 @@
 
   <div class="screen">
 
-    <p class="out success"># access granted &mdash; welcome to daily-learn</p>
+    <p class="out success"># access granted</p>
+    <h1 class="welcome-heading">WELCOME GABRIEL</h1>
 
-    <p class="line">
-      <span class="prompt">guest@daily-learn</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
-      <span class="cmd">whoami</span>
-    </p>
-    <p class="out">guest</p>
+    <div id="calendar" class="calendar" aria-label="progress calendar"></div>
 
-    <p class="line">
-      <span class="prompt">guest@daily-learn</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
-      <span class="cmd">cat README.md</span>
-    </p>
-    <p class="out">
-      daily-learn — a small daily writing exercise.<br>
-      a prompt comes in, an essay goes out, progress gets tracked over time.
-    </p>
-
-    <p class="line">
-      <span class="prompt">guest@daily-learn</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
-      <span class="cmd">git status</span>
-    </p>
-    <p class="out">
-      on branch <span class="accent">main</span><br>
-      nothing built yet — scaffold only, features coming soon
-    </p>
-
-    <p class="line">
+    <p class="line" style="margin-top: 18px;">
       <span class="prompt">guest@daily-learn</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
       <span class="cursor">&nbsp;</span>
     </p>
@@ -87,13 +66,14 @@
   </div>
 
   <div class="statusbar">
-    <span>no tracking &middot; gate solved client-side, not real auth</span>
+    <span>hover a day for details &middot; not real auth</span>
     <a href="https://github.com/neoutinn/daily-learn">source</a>
   </div>
 
 </main>
 
 <script src="app.js"></script>
+<script src="calendar.js"></script>
 
 </body>
 </html>
