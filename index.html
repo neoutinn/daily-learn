@@ -3,73 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>guest@daily-learn: ~</title>
+<title>DAILY-LEARN</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<main class="terminal" id="gate">
+<main class="hud-panel" id="gate">
+  <span class="corner corner-tl"></span>
+  <span class="corner corner-tr"></span>
+  <span class="corner corner-bl"></span>
+  <span class="corner corner-br"></span>
 
-  <div class="titlebar">
-    <span class="dot dot-red"></span>
-    <span class="dot dot-yellow"></span>
-    <span class="dot dot-green"></span>
-    <span class="titlebar-label">daily-learn login</span>
+  <div class="hud-header">
+    <span class="status-dot"></span>
+    <span class="hud-label">DAILY-LEARN // ACCESS</span>
   </div>
 
-  <div class="screen">
+  <div class="hud-body">
 
-    <p class="line boot">booting daily-learn OS v0.1 ...</p>
-    <p class="line boot">authentication required.</p>
+    <p class="readout">SYSTEM ONLINE.</p>
+    <p class="readout">IDENTITY VERIFICATION REQUIRED.</p>
 
-    <p class="line problem-line">
-      solve to continue&nbsp;&nbsp;<span id="problem" class="accent">&hellip;</span>&nbsp;=
+    <p class="problem-line">
+      SOLVE TO AUTHENTICATE&nbsp;&nbsp;<span id="problem" class="accent">&hellip;</span>&nbsp;=
     </p>
 
-    <p class="line">
-      <span class="prompt">guest@daily-learn</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
-      <input id="answer" class="answer-input" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" aria-label="answer">
-    </p>
+    <div class="input-row">
+      <span class="input-caret">&gt;</span>
+      <input id="answer" class="answer-input" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" aria-label="answer" placeholder="RESPONSE">
+    </div>
 
-    <p class="out error" id="error" hidden>access denied &mdash; incorrect answer, try again.</p>
+    <p class="readout error" id="error" hidden>ACCESS DENIED &mdash; INCORRECT RESPONSE.</p>
 
   </div>
 
-  <div class="statusbar">
-    <span>press enter to submit</span>
+  <div class="hud-footer">
+    <span>PRESS ENTER TO SUBMIT</span>
     <span id="attempts"></span>
   </div>
-
 </main>
 
-<main class="terminal" id="site" hidden>
+<main class="hud-panel" id="site" hidden>
+  <span class="corner corner-tl"></span>
+  <span class="corner corner-tr"></span>
+  <span class="corner corner-bl"></span>
+  <span class="corner corner-br"></span>
 
-  <div class="titlebar">
-    <span class="dot dot-red"></span>
-    <span class="dot dot-yellow"></span>
-    <span class="dot dot-green"></span>
-    <span class="titlebar-label">guest@daily-learn: ~</span>
+  <div class="hud-header">
+    <span class="status-dot status-dot-online"></span>
+    <span class="hud-label">DAILY-LEARN // ONLINE</span>
   </div>
 
-  <div class="screen">
+  <div class="hud-body">
 
-    <p class="out success"># access granted</p>
-    <h1 class="welcome-heading">WELCOME GABRIEL</h1>
+    <p class="readout success">ACCESS GRANTED.</p>
+    <h1 class="welcome-heading">WELCOME, GABRIEL</h1>
 
     <div id="calendar" class="calendar" aria-label="progress calendar"></div>
 
-    <p class="line" style="margin-top: 18px;">
-      <span class="prompt">guest@daily-learn</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
-      <span class="cursor">&nbsp;</span>
-    </p>
+    <p class="readout idle"><span class="idle-dot"></span> STANDING BY</p>
 
   </div>
 
-  <div class="statusbar">
-    <span>hover a day for details &middot; not real auth</span>
-    <a href="https://github.com/neoutinn/daily-learn">source</a>
+  <div class="hud-footer">
+    <span>HOVER A DAY FOR DETAILS &middot; NOT REAL AUTH</span>
+    <a href="https://github.com/neoutinn/daily-learn">SOURCE</a>
   </div>
-
 </main>
 
 <script src="app.js"></script>

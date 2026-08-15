@@ -3,7 +3,8 @@
 // This is a vibe gate, not real security: the correct answer is computed
 // and checked in the browser, so anyone reading this file (or dev tools)
 // can bypass it trivially. There's no sensitive content behind it — it's
-// here to fit the "terminal login" feel, not to protect anything.
+// here to fit the AI-assistant "identity verification" feel, not to
+// protect anything.
 (function () {
   "use strict";
 
@@ -76,7 +77,7 @@
 
     attempts += 1;
     errorEl.hidden = false;
-    attemptsEl.textContent = "attempts: " + attempts;
+    attemptsEl.textContent = "ATTEMPTS: " + attempts;
     input.value = "";
     current = generateProblem();
     paintProblem();
