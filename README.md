@@ -3,10 +3,11 @@ a learning tool, intended to be used daily, where different prompts are given in
 
 ## status
 
-Early scaffold only — a static, cozy pixel-art landing page (warm wood
-and parchment tones, "Pixelify Sans" font), gated by a "solve the riddle
-to come in" arithmetic screen, then a welcome page with a bookshelf
-calendar. No real prompt/essay/grading feature yet; those come next.
+A static, cozy pixel-art site (warm wood and parchment tones, "Pixelify
+Sans" font), gated by a "solve the riddle to come in" arithmetic screen,
+then a welcome page with a bookshelf calendar that opens into a writing
+desk — the daily prompt/essay/grading/tracking loop the project is
+actually for.
 
 Note: the gate is a fun client-side puzzle, not real authentication — the
 answer is generated and checked in the browser (`app.js`), so it's trivially
@@ -16,9 +17,32 @@ The calendar (`calendar.js`) renders the current month as a wooden
 bookshelf, one shelf per week, one book per day. Hovering today's or a
 past day's book slides it partially up out of the shelf and shows a
 tooltip: today's topic, or a past day's status — finished / bookmarked /
-unopened — read from `localStorage["daily-learn-progress"]`. Nothing
-writes into that key yet, so every past day currently reads "unopened"
-until the real essay-writing flow exists.
+unopened — read via `progress.js` from `localStorage["daily-learn-progress"]`.
+Clicking any of those books (today, or a past "unopened"/"bookmarked"/
+"finished" day) opens the writing desk for that date.
+
+The writing desk (`essay.js`) shows that day's prompt and a textarea.
+"save & keep working" stores a draft (day shows as bookmarked); "finish
+for today" stores it as done and runs it through a heuristic grade —
+word count, sentence count/length, and vocabulary variety, mapped to a
+cozy seed → sprout → sapling → oak tier plus a couple of short notes.
+**This is not AI grading and not a real teacher** — it's word/sentence
+counting dressed up in the theme, same honesty as the gate's "not real
+security" — real grading is still a "comes next" item. A finished day
+can be reopened and "revise"d, which re-runs the grade on the edited
+text. Storage schema (`progress.js`):
+
+```
+localStorage["daily-learn-progress"] = {
+  "YYYY-MM-DD": {
+    status: "completed" | "incomplete",
+    prompt: "the topic text shown that day",
+    essay: "what was written",
+    grade: { tier, label, words, sentences, avgWordsPerSentence, notes: [...] },
+    updatedAt: "<ISO timestamp>"
+  }
+}
+```
 
 It has synthesized cozy sound effects (`sfx.js`): a soft pluck on access
 granted, a gentle double-knock on a wrong answer, quiet key-ticks while

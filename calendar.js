@@ -4,75 +4,34 @@
 // one book per day. Today's book glows faintly. Hovering a past or today's
 // book slides it partially up out of the shelf and reveals a tooltip:
 // today's topic, or a past day's status (finished / bookmarked / unopened)
-// pulled from localStorage.
-//
-// Nothing writes "completed"/"incomplete" into storage yet — that happens
-// once the actual daily-prompt/essay flow exists. Until then every past
-// day reads as "unopened". Schema:
-//   localStorage["daily-learn-progress"] = { "YYYY-MM-DD": "completed" | "incomplete" }
+// pulled from storage via progress.js. Clicking any interactive book opens
+// the writing desk (essay.js) for that date — today to write, a past
+// "unopened" day to catch up, a "bookmarked" day to keep going, a
+// "finished" day to read back what was written.
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "daily-learn-progress";
   var BOOK_COLORS = 8;
-
-  // Placeholder topics until the real prompt list/generator is built —
-  // just enough variety to demo the "hover today" behavior.
-  var TOPICS = [
-    "Describe a small habit that quietly changed your life.",
-    "What's a belief you held strongly and later abandoned?",
-    "Write about a place that feels unlike anywhere else.",
-    "Explain something you understand well to a total beginner.",
-    "What does 'doing good work' mean to you?",
-    "Describe a disagreement that taught you something.",
-    "What's a skill you wish schools actually taught?",
-    "Write about a time you were wrong in a useful way.",
-    "What would you build if failure were off the table?",
-    "Describe the last thing that made you genuinely curious.",
-    "What's a rule you follow that most people don't?",
-    "Write about a piece of advice you didn't take.",
-    "What does 'enough' look like in your life right now?",
-    "Describe a tool or object you couldn't work without.",
-    "What's something you do differently than most people?",
-    "Write about a question you don't have a good answer to.",
-    "What's a compromise you made that you still think about?",
-    "Describe how your thinking has changed in the last year.",
-    "What's worth being stubborn about?",
-    "Write about something ordinary that deserves more attention."
-  ];
-
-  function pad(n) {
-    return n < 10 ? "0" + n : String(n);
-  }
-
-  function toKey(date) {
-    return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate());
-  }
-
-  // Deterministic per-date topic pick, so it's stable across reloads
-  // without needing to store anything.
-  function topicForDate(date) {
-    var epochDay = Math.floor(date.getTime() / 86400000);
-    var idx = ((epochDay % TOPICS.length) + TOPICS.length) % TOPICS.length;
-    return TOPICS[idx];
-  }
-
-  function getProgress() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : {};
-    } catch (e) {
-      return {};
-    }
-  }
-
-  function statusFor(date, progress) {
-    var val = progress[toKey(date)];
-    return val === "completed" || val === "incomplete" ? val : "none";
-  }
 
   function escapeAttr(s) {
     return s.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  }
+
+  function tooltipFor(date, isToday) {
+    var entry = window.DLProgress.getEntry(date);
+
+    if (entry && entry.status === "completed") {
+      var g = entry.grade;
+      return "finished" + (g ? " — " + g.label + " (" + g.words + " words)" : "");
+    }
+    if (entry && entry.status === "incomplete") {
+      var g2 = entry.grade;
+      return "bookmarked — in progress" + (g2 ? " (" + g2.words + " words)" : "");
+    }
+    if (isToday) {
+      return "today's chapter: " + window.DLProgress.topicForDate(date);
+    }
+    return "unopened";
   }
 
   function buildCalendar() {
@@ -88,7 +47,6 @@
     var startWeekday = new Date(year, month, 1).getDay();
     var monthLabel = today.toLocaleString("en-US", { month: "long" }) + " " + year;
 
-    var progress = getProgress();
     var dow = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
     var html = '<div class="shelf-title">' + monthLabel + "</div>";
@@ -113,15 +71,12 @@
 
       if (day === today.getDate()) {
         bookClasses.push("today");
-        tooltip = "today's chapter: " + topicForDate(date);
+        tooltip = tooltipFor(date, true);
         interactive = true;
       } else if (date < today) {
-        var status = statusFor(date, progress);
-        var label = status === "completed" ? "finished"
-          : status === "incomplete" ? "bookmarked — in progress"
-          : "unopened";
+        var status = window.DLProgress.statusFor(date);
         bookClasses.push("past", "status-" + status);
-        tooltip = label;
+        tooltip = tooltipFor(date, false);
         interactive = true;
       } else {
         bookClasses.push("future");
@@ -129,20 +84,33 @@
 
       html += '<div class="book-slot"><div class="' + bookClasses.join(" ") + '"' +
         (tooltip ? ' data-tooltip="' + escapeAttr(tooltip) + '"' : "") +
-        (interactive ? ' tabindex="0"' : "") +
+        (interactive ? ' tabindex="0" data-date="' + window.DLProgress.toKey(date) + '"' : "") +
         "><span class=\"book-deco\"></span><span class=\"book-num\">" + day + "</span></div></div>";
     }
 
     html += "</div>";
     container.innerHTML = html;
 
-    var interactiveBooks = container.querySelectorAll(".book[data-tooltip]");
+    var interactiveBooks = container.querySelectorAll(".book[data-date]");
     for (var idx = 0; idx < interactiveBooks.length; idx++) {
       interactiveBooks[idx].addEventListener("mouseenter", function () {
         if (window.DLSound) window.DLSound.hover();
       });
+      interactiveBooks[idx].addEventListener("click", function (evt) {
+        var key = evt.currentTarget.getAttribute("data-date");
+        if (key && window.DLDesk) window.DLDesk.open(key);
+      });
+      interactiveBooks[idx].addEventListener("keydown", function (evt) {
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          var key = evt.currentTarget.getAttribute("data-date");
+          if (key && window.DLDesk) window.DLDesk.open(key);
+        }
+      });
     }
   }
+
+  window.DLCalendar = { rebuild: buildCalendar };
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", buildCalendar);

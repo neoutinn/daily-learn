@@ -434,3 +434,125 @@ body::after  { transform: translate(30%, 40%);   animation: drift 11s ease-in-ou
   pointer-events: none;
   box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.25);
 }
+
+/* --- writing desk ----------------------------------------------------- */
+
+.back-link {
+  display: inline-block;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+.back-link:hover {
+  color: var(--wood);
+  text-decoration: underline;
+}
+
+.desk-textarea {
+  display: block;
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  background: var(--paper-dim);
+  border: 2px solid var(--wood-dark);
+  border-radius: 4px;
+  color: var(--ink);
+  caret-color: var(--wood);
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 12px;
+  outline: none;
+}
+
+.desk-textarea:focus {
+  border-color: var(--gold);
+}
+
+.desk-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+}
+
+.desk-hint {
+  font-style: italic;
+  text-align: right;
+}
+
+.desk-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn-primary {
+  background: var(--wood);
+  color: var(--paper);
+  border-color: var(--gold);
+}
+
+.toggle-btn-primary:hover {
+  color: var(--gold-soft);
+}
+
+.desk-essay {
+  background: var(--paper-dim);
+  border: 2px solid var(--wood-dark);
+  border-radius: 4px;
+  padding: 14px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  max-height: 320px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.desk-grade {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.grade-tier {
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 2px solid var(--wood-dark);
+  color: var(--paper);
+}
+
+.grade-seed    { background: var(--ink-soft); }
+.grade-sprout  { background: var(--ok); }
+.grade-sapling { background: #4c6b3e; }
+.grade-oak     { background: var(--gold); color: var(--ink); }
+
+.grade-stat {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+}
+
+.grade-notes {
+  flex-basis: 100%;
+  margin: 4px 0 0;
+  padding-left: 18px;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+.grade-notes li {
+  margin-bottom: 2px;
+}

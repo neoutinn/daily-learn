@@ -68,9 +68,54 @@
   </div>
 </main>
 
+<main class="panel" id="desk" hidden>
+
+  <div class="panel-header">
+    <span class="candle candle-lit"></span>
+    <span class="panel-label">daily-learn</span>
+  </div>
+
+  <div class="panel-body">
+
+    <button id="desk-back" class="back-link" type="button">&larr; back to the shelf</button>
+    <p class="note" id="desk-date"></p>
+    <p class="riddle" id="desk-prompt"></p>
+
+    <div id="desk-write" class="desk-write">
+      <textarea id="desk-textarea" class="desk-textarea" placeholder="start writing&hellip;" spellcheck="true"></textarea>
+      <div class="desk-meta">
+        <span id="desk-wordcount">0 words</span>
+        <span class="desk-hint">not graded by a person or an AI &mdash; just word &amp; sentence counting</span>
+      </div>
+      <div class="desk-actions">
+        <button id="desk-save" class="toggle-btn" type="button">save &amp; keep working</button>
+        <button id="desk-finish" class="toggle-btn toggle-btn-primary" type="button">finish for today</button>
+      </div>
+    </div>
+
+    <div id="desk-view" class="desk-view" hidden>
+      <div class="desk-essay" id="desk-essay-text"></div>
+      <div class="desk-grade" id="desk-grade"></div>
+      <div class="desk-actions">
+        <button id="desk-revise" class="toggle-btn" type="button">revise</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel-footer">
+    <span id="desk-status"></span>
+    <span class="footer-right">
+      <a href="https://github.com/neoutinn/daily-learn">source</a>
+    </span>
+  </div>
+</main>
+
 <script src="sfx.js"></script>
+<script src="progress.js"></script>
 <script src="app.js"></script>
 <script src="calendar.js"></script>
+<script src="essay.js"></script>
 
 </body>
 </html>
