@@ -29,7 +29,8 @@
       return "bookmarked — in progress" + (g2 ? " (" + g2.words + " words)" : "");
     }
     if (isToday) {
-      return "today's chapter: " + window.DLProgress.topicForDate(date);
+      var article = window.DLProgress.articleForDate(date);
+      return "today's chapter: " + article.title + " — " + article.author;
     }
     return "unopened";
   }

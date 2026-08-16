@@ -63,6 +63,7 @@
     <span>hover a book for details &middot; not real security</span>
     <span class="footer-right">
       <button id="sfx-toggle" class="toggle-btn" type="button" aria-pressed="true">SOUND: ON</button>
+      <button id="ai-status" class="toggle-btn" type="button" aria-pressed="false">AI GRADING: OFF</button>
       <a href="https://github.com/neoutinn/daily-learn">source</a>
     </span>
   </div>
@@ -79,22 +80,33 @@
 
     <button id="desk-back" class="back-link" type="button">&larr; back to the shelf</button>
     <p class="note" id="desk-date"></p>
-    <p class="riddle" id="desk-prompt"></p>
+
+    <div class="desk-article">
+      <p class="desk-article-kicker">today's piece — read this first:</p>
+      <a class="desk-article-link" id="desk-article-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+      <p class="desk-article-byline" id="desk-article-byline"></p>
+      <p class="desk-instruction">Then write your response below &mdash; what stuck with you, where you agree or push back, or what it connects to in your own life.</p>
+    </div>
 
     <div id="desk-write" class="desk-write">
       <textarea id="desk-textarea" class="desk-textarea" placeholder="start writing&hellip;" spellcheck="true"></textarea>
       <div class="desk-meta">
         <span id="desk-wordcount">0 words</span>
-        <span class="desk-hint">not graded by a person or an AI &mdash; just word &amp; sentence counting</span>
+        <span class="desk-hint">graded by Claude if you've added a key in settings &mdash; otherwise just word &amp; sentence counting</span>
       </div>
       <div class="desk-actions">
         <button id="desk-save" class="toggle-btn" type="button">save &amp; keep working</button>
         <button id="desk-finish" class="toggle-btn toggle-btn-primary" type="button">finish for today</button>
       </div>
+      <div id="desk-busy" class="desk-busy" hidden>
+        <span class="desk-busy-spinner" aria-hidden="true"></span>
+        <span id="desk-busy-text">grading&hellip;</span>
+      </div>
     </div>
 
     <div id="desk-view" class="desk-view" hidden>
       <div class="desk-essay" id="desk-essay-text"></div>
+      <p class="desk-warning" id="desk-warning" hidden></p>
       <div class="desk-grade" id="desk-grade"></div>
       <div class="desk-actions">
         <button id="desk-revise" class="toggle-btn" type="button">revise</button>
@@ -111,8 +123,52 @@
   </div>
 </main>
 
+<main class="panel" id="settings" hidden>
+
+  <div class="panel-header">
+    <span class="candle candle-lit"></span>
+    <span class="panel-label">daily-learn</span>
+  </div>
+
+  <div class="panel-body">
+
+    <button id="settings-back" class="back-link" type="button">&larr; back to the shelf</button>
+    <p class="note">AI grading (optional)</p>
+    <p class="desk-instruction">Paste your own Anthropic API key to have Claude grade your essays against the 6+1 Trait Writing model &mdash; a real classroom rubric &mdash; instead of the built-in word-counting check. The key is saved only in this browser's local storage and is sent straight from this browser to Anthropic's API, never anywhere else. Each grade is billed to your own Anthropic account. Leave this blank to keep using the free heuristic grade.</p>
+
+    <div class="settings-field">
+      <label for="settings-key" class="settings-label">Anthropic API key</label>
+      <input id="settings-key" class="answer-input settings-input" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-&hellip;">
+    </div>
+
+    <div class="settings-field">
+      <label for="settings-model" class="settings-label">model</label>
+      <select id="settings-model" class="settings-select">
+        <option value="claude-opus-5">Claude Opus 5 (most capable, default)</option>
+        <option value="claude-sonnet-5">Claude Sonnet 5 (faster, cheaper)</option>
+        <option value="claude-haiku-4-5">Claude Haiku 4.5 (fastest, cheapest)</option>
+      </select>
+    </div>
+
+    <div class="desk-actions">
+      <button id="settings-save" class="toggle-btn toggle-btn-primary" type="button">save</button>
+      <button id="settings-clear" class="toggle-btn" type="button">clear key</button>
+    </div>
+    <p class="settings-status" id="settings-status"></p>
+
+  </div>
+
+  <div class="panel-footer">
+    <span>stored in this browser only</span>
+    <span class="footer-right">
+      <a href="https://github.com/neoutinn/daily-learn">source</a>
+    </span>
+  </div>
+</main>
+
 <script src="sfx.js"></script>
 <script src="progress.js"></script>
+<script src="settings.js"></script>
 <script src="app.js"></script>
 <script src="calendar.js"></script>
 <script src="essay.js"></script>

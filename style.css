@@ -556,3 +556,184 @@ body::after  { transform: translate(30%, 40%);   animation: drift 11s ease-in-ou
 .grade-notes li {
   margin-bottom: 2px;
 }
+
+.grade-source {
+  flex-basis: 100%;
+  font-size: 0.62rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  order: -1;
+}
+
+.grade-summary {
+  flex-basis: 100%;
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.grade-subhead {
+  flex-basis: 100%;
+  margin: 10px 0 0;
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  color: var(--ink-soft);
+}
+
+.grade-traits {
+  flex-basis: 100%;
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.grade-traits li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  padding: 6px 8px;
+  background: var(--paper-dim);
+  border: 2px solid var(--wood-dark);
+  border-radius: 3px;
+}
+
+.trait-name {
+  font-size: 0.68rem;
+  color: var(--wood);
+}
+
+.trait-score {
+  font-size: 0.62rem;
+  color: var(--ink-soft);
+}
+
+.trait-note {
+  flex-basis: 100%;
+  font-size: 0.72rem;
+  color: var(--ink);
+}
+
+/* --- article prompt (writing desk) ------------------------------------ */
+
+.desk-article {
+  margin: 10px 0 18px;
+  padding: 10px 12px;
+  background: var(--paper-dim);
+  border: 2px solid var(--wood-dark);
+  border-radius: 4px;
+}
+
+.desk-article-kicker {
+  margin: 0 0 4px;
+  font-size: 0.62rem;
+  letter-spacing: 0.5px;
+  color: var(--ink-soft);
+}
+
+.desk-article-link {
+  display: inline-block;
+  font-size: 0.95rem;
+  color: var(--wood);
+  text-decoration: none;
+}
+
+.desk-article-link:hover {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+.desk-article-byline {
+  margin: 2px 0 8px;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+}
+
+.desk-instruction {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* --- grading in progress ----------------------------------------------- */
+
+.desk-busy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.desk-busy[hidden] {
+  display: none;
+}
+
+.desk-busy-spinner {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--wood-lite);
+  border-top-color: var(--gold);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.desk-warning {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  background: rgba(181, 101, 74, 0.15);
+  border: 2px solid var(--dusty);
+  border-radius: 4px;
+  color: var(--dusty);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+/* --- settings panel ----------------------------------------------------- */
+
+.settings-field {
+  margin: 14px 0;
+}
+
+.settings-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  color: var(--ink-soft);
+}
+
+.settings-input {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+}
+
+.settings-select {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--paper-dim);
+  border: 2px solid var(--wood-dark);
+  border-radius: 4px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8rem;
+}
+
+.settings-status {
+  margin: 12px 0 0;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
